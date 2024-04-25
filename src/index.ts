@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { Db, MongoClient, ServerApiVersion } from "mongodb";
 require("dotenv").config();
 
 const app: Express = express();
@@ -9,9 +9,6 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-console.log(process.env.DB_USER);
-console.log(process.env.DB_PASS);
 
 const uri = process.env.DB_URL as string;
 const client = new MongoClient(uri, {
@@ -25,9 +22,19 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    
+    // collections
+    const productsCollection = client.db("teach-deal").collection("products");
 
-    
+    // end-point for all Products
+    app.get("/products", async (req, res) => {
+      try {
+        const products = await productsCollection.find().toArray();
+        console.log(products);
+        res.send(products);
+      } catch (error) {
+        res.send({message: "500 Error "})
+      }
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     app.listen(port, () => {
