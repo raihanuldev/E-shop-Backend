@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
-import { Db, MongoClient, ServerApiVersion } from "mongodb";
+import { Db, MongoClient, ObjectId, ServerApiVersion } from "mongodb";
 require("dotenv").config();
 
 const app: Express = express();
@@ -32,9 +32,25 @@ async function run() {
         console.log(products);
         res.send(products);
       } catch (error) {
-        res.send({message: "500 Error "})
+        res.send({ message: "500 Error " });
       }
     });
+    // Get Specific product by ID
+    app.get("/products/:id", async (req, res) => {
+      try {
+        const productId = req.params.id;
+        console.log(productId);
+        const product = await productsCollection.findOne({ _id: new ObjectId(productId) });
+        if (!product) {
+          return res.status(404).json({ message: "Product not found" });
+        }
+        res.json(product);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     app.listen(port, () => {
