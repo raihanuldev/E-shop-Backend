@@ -2,11 +2,11 @@
   "name": "e-shop-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon index.ts"
   },
   "keywords": [],
   "author": "",
