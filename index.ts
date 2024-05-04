@@ -24,7 +24,7 @@ async function run() {
     await client.connect();
     // collections
     const productsCollection = client.db("teach-deal").collection("products");
-
+    const categoriesCollection = client.db("teach-deal").collection("categories");
     // end-point for all Products
     app.get("/products", async (req, res) => {
       try {
@@ -45,6 +45,28 @@ async function run() {
           return res.status(404).json({ message: "Product not found" });
         }
         res.json(product);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
+
+    // categories Information
+    app.get('/categories',async(req,res)=>{
+      try {
+        const categories = await categoriesCollection.find().toArray();
+        res.send(categories)
+      } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+      }
+    })
+
+    // fetch data by category
+    app.get('/categoriesProducts/:category', async (req, res) => {
+      try {
+        const category = req.params.category;
+        const products = await productsCollection.find({ category }).toArray();
+        res.json(products);
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
