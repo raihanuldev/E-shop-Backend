@@ -110,7 +110,22 @@ async function run() {
         res.status(500).json({ message: "Internal server error" });
       }
     });
-
+    // just update all products
+     // Endpoint to update all products with status: "publish"
+     app.put("/update-products-status", async (req: Request, res: Response) => {
+      try {
+        const updateResult = await productsCollection.updateMany(
+          {},
+          { $set: { status: "publish" } }
+        );
+        res.status(200).json({
+          message: `${updateResult.modifiedCount} products updated with status: "publish"`,
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     app.listen(port, () => {
