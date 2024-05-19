@@ -25,6 +25,37 @@ async function run() {
     // collections
     const productsCollection = client.db("teach-deal").collection("products");
     const categoriesCollection = client.db("teach-deal").collection("categories");
+    const usersCollection = client.db("teach-deal").collection("users");
+
+    // users endPoint
+    app.post("/register", async (req: Request, res: Response) => {
+      try {
+        const { name, email, password, photoURL, role } = req.body;
+    
+        // Check if the user already exists
+        const existingUser = await usersCollection.findOne({ email });
+        if (existingUser) {
+          return res.status(400).json({ message: "User already exists" });
+        }
+    
+        // Create a new user
+        const newUser = {
+          name,
+          email,
+          password, 
+          photoURL,
+          role,
+          createdAt: new Date(),
+        };
+    
+        const result = await usersCollection.insertOne(newUser);
+        res.status(201).json({ message: "User registered successfully", userId: result.insertedId });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
+    
     // end-point for all Products
     app.get("/products", async (req, res) => {
       try {
