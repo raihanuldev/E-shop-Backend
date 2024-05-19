@@ -6,7 +6,14 @@ require("dotenv").config();
 const app: Express = express();
 const port = 5000;
 // middilware
+const corsOptions = {
+  origin: 'http://localhost:3000', // Replace frontend link
+  optionsSuccessStatus: 200,
+};
+
+
 app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -60,7 +67,7 @@ async function run() {
     app.get("/products", async (req, res) => {
       try {
         const products = await productsCollection.find().toArray();
-        console.log(products);
+        // console.log(products);
         res.send(products);
       } catch (error) {
         res.send({ message: "500 Error " });
