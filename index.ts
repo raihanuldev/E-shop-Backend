@@ -62,7 +62,19 @@ async function run() {
         res.status(500).json({ message: "Internal server error" });
       }
     });
-    
+    // get all users 
+    app.get('/api/v1/syestem-users', async (req: Request,res: Response)=>{
+      
+      try {
+        const results = await usersCollection.find({},{
+          projection: {name: 1, email:1, _id:1,photoURL:1,role:1,createdAt:1}
+        }).toArray();
+        res.send(results)
+      } catch (error) {
+        res.send({ message: "500 Error " });
+      }
+
+    })
     // end-point for all Products
     app.get("/products", async (req, res) => {
       try {
