@@ -75,6 +75,12 @@ async function run() {
       }
 
     })
+    // Post New Product
+    app.post('/add-product', async (req,res)=>{
+      const product = req.body;
+      const results =await productsCollection.insertOne(product);
+      res.send(results)  // todo highly structure response data
+    })
     // end-point for all Products
     app.get("/products", async (req, res) => {
       try {
