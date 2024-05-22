@@ -107,6 +107,23 @@ async function run() {
       }
     });
 
+    // Seller Added Products edit Update
+    app.put('/api/seller/updateProduct/:productid',async(req,res)=>{
+      const productId = req.params.productid;
+      const updatedProduct = req.body;
+      delete updatedProduct._id;
+      try {
+        const result = await productsCollection.findOneAndUpdate(
+          {_id: new ObjectId(productId)},
+          {$set: updatedProduct}
+        )
+        res.json({message:"Product Updated Succesfully"})
+      } catch (error) {
+        res.json({message:error})
+      }
+    })
+
+
     //Get Product by email for seller
     app.get('/api/seller/myproducts/:email',async(req,res)=>{
       // console.log(req.params.email);
