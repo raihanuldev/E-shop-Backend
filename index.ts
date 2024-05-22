@@ -121,7 +121,16 @@ async function run() {
         res.status(500).json({text:"Internal Server Error"})
       }
     })
-
+// get currentUserRole
+app.get('/api/auth/:email',async(req,res)=>{
+  const email = req.params.email;
+  try {
+    const user = await usersCollection.findOne({email:email})
+    res.json(user)
+  } catch (error) {
+    res.json({});
+  }
+})
 
     // categories Information
     app.get('/categories',async(req,res)=>{
