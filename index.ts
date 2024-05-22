@@ -107,6 +107,22 @@ async function run() {
       }
     });
 
+    //Get Product by email for seller
+    app.get('/api/seller/myproducts/:email',async(req,res)=>{
+      // console.log(req.params.email);
+      try {
+        const email = req.params.email;
+        const sellerProducts = await productsCollection.find({sellerEmail: email}).toArray();
+        // if(!sellerProducts){
+        //   return res.status(1000).json({message:"Products not avaible right now. please add new Produts"})
+        // }
+        res.json(sellerProducts)
+      } catch (error) {
+        res.status(500).json({text:"Internal Server Error"})
+      }
+    })
+
+
     // categories Information
     app.get('/categories',async(req,res)=>{
       try {
