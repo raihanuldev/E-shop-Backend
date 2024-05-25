@@ -30,7 +30,7 @@ async function run() {
   try {
     await client.connect();
     // collections
-    const productsCollection = client.db("teach-deal").collection("products");
+    const productsCollection = client.db("teach-deal").collection("test");
     const categoriesCollection = client.db("teach-deal").collection("categories");
     const usersCollection = client.db("teach-deal").collection("users");
 
