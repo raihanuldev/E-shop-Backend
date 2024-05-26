@@ -63,7 +63,7 @@ async function run() {
       }
     });
     // get all users 
-    app.get('/api/v1/syestem-users', async (req: Request,res: Response)=>{
+    app.get('/users', async (req: Request,res: Response)=>{
       
       try {
         const results = await usersCollection.find({},{
