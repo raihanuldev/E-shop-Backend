@@ -91,6 +91,13 @@ async function run() {
         res.send({ message: "500 Error " });
       }
     });
+    // Search-Products
+    app.get('/Search-products', async (req, res) => {
+      const query = req.query.query;
+      const result = await productsCollection.find({ model: { $regex: query, $options: 'i' } }).toArray();
+      res.send(result);
+    });
+
     // Get Specific product by ID
     app.get("/products/:id", async (req, res) => {
       try {
