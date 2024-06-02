@@ -34,7 +34,21 @@ async function run() {
     const productsCollection = client.db("teach-deal").collection("test");
     const categoriesCollection = client.db("teach-deal").collection("categories");
     const usersCollection = client.db("teach-deal").collection("users");
+    const ordersCollection = client.db('teach-deal').collection("orders")
 
+
+    app.post('/process-order', async (req: Request, res: Response) => {
+      const { product, buyerEmail } = req.body;
+      const newProduct = {...product,...buyerEmail,status:"pending"}
+      const result = await ordersCollection.insertOne(newProduct);
+      res.send(result)
+  });
+  
+    app.get('/orders/:email',async(req:Request,res:Response)=>{
+      const {email} = req.params;
+      const result = await ordersCollection.find({buyerEmail:email}).toArray();
+      res.send(result)
+    })
     // users endPoint
     app.post("/register", async (req: Request, res: Response) => {
       try {
