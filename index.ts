@@ -39,7 +39,7 @@ async function run() {
 
     app.post('/process-order', async (req: Request, res: Response) => {
       const { product, buyerEmail } = req.body;
-      const newProduct = {...product,...buyerEmail,status:"pending"}
+      const newProduct = {model:product.model,productId: product._id,sellerEmail: product.sellerEmail,buyerEmail,productImg: product.img,price: product.price}
       const result = await ordersCollection.insertOne(newProduct);
       res.send(result)
   });
