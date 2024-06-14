@@ -7,8 +7,8 @@ const app: Express = express();
 const port = 5000;
 // middilware
 const corsOptions = {
-  origin: 'http://localhost:3000', // Replace frontend link
-  // origin: 'https://tech-deal-nextjs.vercel.app', // Replace frontend link
+  // origin: 'http://localhost:3000', // Replace frontend link
+  origin: 'https://tech-deal-nextjs.vercel.app', // Replace frontend link
   optionsSuccessStatus: 200,
 };
 
